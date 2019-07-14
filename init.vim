@@ -258,7 +258,7 @@ nnoremap <SPACE>pf :FZF<CR>
 nnoremap <SPACE>pd :echo @%<CR>
 
 " Ag Quick bind
-nnoremap <SPACE>sp :Ag<CR>
+nnoremap <SPACE>/ :Ag<CR>
 
 " Format JSON quickbind, first is for line, second for file
 nnoremap <SPACE>fj :.!python -m json.tool<CR>
@@ -301,6 +301,16 @@ call deoplete#custom#option('omni_patterns', { 'go': '[^. *\t]\.\w*' })
 " Close preview window after completion
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
 
+" use tab to autocomplete
+function! s:check_back_space() abort "{{{
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ deoplete#manual_complete()
+
 " Delete whitespace
 func! DeleteTrailingWS()
   exe "normal mz"
@@ -311,10 +321,7 @@ endfunc
 nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
 
 " Setup vim-go save formatters
-let g:go_fmt_options = {
-\ 'gofmt': '',
-\ 'goimports': '',
-\ }
+let g:go_fmt_command = "goimports"
 
 
 " ALE Linting and Language Server configuration
@@ -343,8 +350,21 @@ nnoremap gq :ALEStopAllLSPs<CR>
 " Set gd as ALEGoToDefinition
 nnoremap gd :ALEGoToDefinition<CR>
 
+" Set gd as ALEGoToDefinition
+nnoremap gb <C-o>
+
 " Set gh as ALEHover
 nnoremap gh :ALEHover<CR>
 
 " Set gr as ALEFindReferences
 nnoremap gr :ALEFindReferences<CR>
+
+" Set jk as esc
+imap jk <Esc>
+cnoremap jk <C-C>
+
+" enable paste from clipboard
+set clipboard=unnamed
+
+" switch buffer
+nnoremap <SPACE><TAB> <C-^>

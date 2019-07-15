@@ -90,6 +90,10 @@ call plug#begin('~/.local/share/nvim/plugged')
 
   " Markdown Table
   Plug 'dhruvasagar/vim-table-mode'
+
+  " Vim expand region
+  Plug 'terryma/vim-expand-region'
+
 call plug#end()
 
 set termguicolors
@@ -368,3 +372,24 @@ set clipboard=unnamed
 
 " switch buffer
 nnoremap <SPACE><TAB> <C-^>
+
+" autosave delay, cursorhold trigger, default: 4000ms
+setl updatetime=300
+" highlight the word under cursor (CursorMoved is inperformant)
+highlight WordUnderCursor cterm=underline gui=underline
+autocmd CursorHold * call HighlightCursorWord()
+function! HighlightCursorWord()
+    " if hlsearch is active, don't overwrite it!
+    let search = getreg('/')
+    let cword = expand('<cword>')
+    if match(cword, search) == -1
+        exe printf('match WordUnderCursor /\V\<%s\>/', escape(cword, '/\'))
+    endif
+endfunction
+
+" remap default vim-expand-region
+map V <Plug>(expand_region_expand)
+" map J <Plug>(expand_region_shrink)
+
+" replace under cursor
+:nnoremap <SPACE>se :%s/\<<C-r><C-w>\>//g<Left><Left>

@@ -134,7 +134,7 @@ set autoread
 
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
+set whichwrap+=<,>
 
 " Height of the command bar
 set cmdheight=2
@@ -148,8 +148,6 @@ set ignorecase
 " When searching try to be smart about cases
 set smartcase
 
-" Prevent text wrapping by default... It's annoying
-set nowrap
 " If you do want wrapping, match the indentation
 set breakindent
 " Break on whole words
@@ -388,7 +386,7 @@ function! HighlightCursorWord()
 endfunction
 
 " remap default vim-expand-region
-map V <Plug>(expand_region_expand)
+map <SPACE>v <Plug>(expand_region_expand)
 " map J <Plug>(expand_region_shrink)
 
 " replace under cursor

@@ -254,17 +254,34 @@ nnoremap <SPACE>cc :ccl<CR>:pc<CR>:lclose<CR>
 " Rest client
 map <SPACE>jj :call VrcQuery()<CR>
 
-" FZF Quick bind
-nnoremap <SPACE>pf :FZF<CR>
-" Print current file path
-nnoremap <SPACE>pd :echo @%<CR>
+""" FZF CONFIG
+function FzfCurrDir()
+  let currDir = expand('%:p:h')
+  let $FZF_DEFAULT_COMMAND = 'fd --type f . ' . currDir
+  :FZF
+  let $FZF_DEFAULT_COMMAND = ''
+endfunction
+
+function FzfWithGitIgnore()
+  let $FZF_DEFAULT_COMMAND = 'fd --type f'
+  :FZF
+  let $FZF_DEFAULT_COMMAND = ''
+endfunction
+
+" FZF Quick bind, search with fd to respect git-ignore
+nnoremap <SPACE>pf :call FzfWithGitIgnore()<CR>
+" FZF with fd in the current files directory
+nnoremap <SPACE>ff :call FzfCurrDir()<CR>
+
+" enable per-command history
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " Ag Quick bind
 nnoremap <SPACE>/ :Ag<CR>
 
 " Format JSON quickbind, first is for line, second for file
-nnoremap <SPACE>fj :.!python -m json.tool<CR>
-nnoremap <SPACE>ff :%!python -m json.tool<CR>
+nnoremap <SPACE>jj :.!python -m json.tool<CR>
+nnoremap <SPACE>jf :%!python -m json.tool<CR>
 
 " Rust Bindings
 nnoremap <SPACE>rf :%!rustfmt<CR>

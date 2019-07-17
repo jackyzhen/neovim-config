@@ -313,15 +313,6 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ deoplete#manual_complete()
 
-" Delete whitespace
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-
-nnoremap <SPACE>rw :call DeleteTrailingWS()<CR>
-
 " Setup vim-go save formatters
 let g:go_fmt_command = "goimports"
 
@@ -336,8 +327,13 @@ let g:ale_linters = {
 
 " ALE Fixers
 let g:ale_fixers = {
+\ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \ 'css': ['stylelint', 'prettier'],
+\ 'javascript': ['prettier']
 \}
+
+" run prettier on save
+let g:ale_fix_on_save = 1
 
 let g:ale_rust_rls_toolchain = 'stable'
 

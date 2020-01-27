@@ -76,17 +76,15 @@ call plug#begin('~/.local/share/nvim/plugged')
   " Go
   Plug 'fatih/vim-go'
 
-  " Rust
-  Plug 'rust-lang/rust.vim'
-  Plug 'timonv/vim-cargo'
-  " Plug 'racer-rust/vim-racer'
-
-  " Automcomplete
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
   " Typescript
   Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+  Plug 'HerringtonDarkholme/yats.vim'
+  Plug 'mhartington/nvim-typescript', {'do': './install.sh'}
   Plug 'leafgarland/typescript-vim'
+
+  " Automcomplete
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
   " Markdown Table
   Plug 'dhruvasagar/vim-table-mode'
@@ -283,15 +281,17 @@ nnoremap <SPACE>/ :Ag<CR>
 nnoremap <SPACE>jj :.!python -m json.tool<CR>
 nnoremap <SPACE>jf :%!python -m json.tool<CR>
 
-" Rust Bindings
-nnoremap <SPACE>rf :%!rustfmt<CR>
-nnoremap <SPACE>rr :CargoRun<CR>
-
 " Table mode bindings
 nnoremap <SPACE>tt :TableModeToggle<CR>
 
 " Edit this file
 nnoremap <SPACE>ev :vnew<CR><C-w>L:e $MYVIMRC<CR>
+
+" reload this file
+nnoremap <SPACE>el :so /Users/jackyzhen/.config/nvim/init.vim<CR>
+
+" save current file if updated
+nnoremap <SPACE>fs :up<CR>
 
 " Toggle file wrapping
 nnoremap <SPACE>ww :set wrap!<CR>
@@ -336,8 +336,8 @@ let g:go_fmt_command = "goimports"
 
 " ALE Linting and Language Server configuration
 let g:ale_linters = {
-\ 'rust': ['rls'],
 \ 'javascript': ['eslint', 'flow', 'flow-language-server', 'jscs', 'jshint', 'standard', 'xo'],
+\ 'typescript': ['tsserver', 'tslint'],
 \ 'go': ['gofmt', 'golint', 'gopls'],
 \ 'css': ['stylelint']
 \}
@@ -346,13 +346,12 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \ 'css': ['stylelint', 'prettier'],
-\ 'javascript': ['prettier']
+\ 'javascript': ['prettier'],
+\ 'typescript': ['prettier']
 \}
 
 " run prettier on save
 let g:ale_fix_on_save = 1
-
-let g:ale_rust_rls_toolchain = 'stable'
 
 let g:ale_set_loclist = 0
 
@@ -381,6 +380,11 @@ cnoremap jk <C-C>
 " enable paste from clipboard
 set clipboard=unnamed
 
+" create new file in current directory
+map <SPACE>fn :e <C-R>=expand("%:p:h") . "/" <CR>
+" delete current file
+map <SPACE>fd :call delete(expand('%'))
+
 " switch buffer
 nnoremap <SPACE><TAB> <C-^>
 
@@ -403,4 +407,7 @@ map <SPACE>v <Plug>(expand_region_expand)
 " map J <Plug>(expand_region_shrink)
 
 " replace under cursor
-:nnoremap <SPACE>se :%s/\<<C-r><C-w>\>//g<Left><Left>
+:nnoremap <SPACE>se :%s/\(\<<C-r><C-w>\>\)//g<Left><Left>
+
+
+noremap <SPACE>fy :let @+=expand("%:p")<CR>

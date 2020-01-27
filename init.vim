@@ -409,5 +409,7 @@ map <SPACE>v <Plug>(expand_region_expand)
 " replace under cursor
 :nnoremap <SPACE>se :%s/\(\<<C-r><C-w>\>\)//g<Left><Left>
 
+" search under cursor
+:nnoremap <SPACE>sf /<C-r><C-w><CR>
 
 noremap <SPACE>fy :let @+=expand("%:p")<CR>

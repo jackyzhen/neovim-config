@@ -343,11 +343,18 @@ let g:ale_linters = {
 \}
 
 " ALE Fixers
+" let g:ale_fixers = {
+" \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+" \ 'css': ['stylelint', 'prettier'],
+" \ 'javascript': ['prettier'],
+" \ 'typescript': ['prettier']
+" \}
+
 let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \ 'css': ['stylelint', 'prettier'],
-\ 'javascript': ['prettier'],
-\ 'typescript': ['prettier']
+ \ 'javascript': ['prettier'],
+ \ 'typescript': ['prettier']
 \}
 
 " run prettier on save
@@ -379,6 +386,8 @@ cnoremap jk <C-C>
 
 " enable paste from clipboard
 set clipboard=unnamed
+" enable mouse scroll in vim
+set mouse=a
 
 " create new file in current directory
 map <SPACE>fn :e <C-R>=expand("%:p:h") . "/" <CR>
